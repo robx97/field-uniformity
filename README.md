@@ -9,6 +9,7 @@ Then run as:
 Where the last bool determines whether the detector has 2x2 (True) or FSD geometry (False).
 <br>
 One can then read out the outputs with NumPy:
+<br>
 `$ data = np.load(path, allow_pickle=True)`
 <br>
 `$ true_hits, reco_hits, PCA_dir, track_labels, a2a_flag , pca_variance, q, t_drift, io_group = data[:9]`
