@@ -207,7 +207,7 @@ for i_evt in range(ev):
                 pca_qual = np.concatenate([pca_qual, pca_q])
                 charge = np.concatenate([charge, qout])
                 drift_time = np.concatenate([drift_time, tout])
-                io_group = np.concatenate([io_group, iog])
+                io_group = np.concatenate([io_group, iogout])
          
     muon_track_number += track_number
 print("Total clusters "+str(len_label))
