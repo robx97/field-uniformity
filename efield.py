@@ -94,33 +94,6 @@ def cluster(i_evt, PromptHits_ev):
         hits[i][3] = hit_cluster.labels_[i]
     return hits
 
-def PCAs(hits_of_track):
-    scaler = StandardScaler()
-    output = {}
-    X_train = hits_of_track
-    #print("Before transformation: "+str(np.max([h[0] for h in hits_of_track])))
-    X_train = scaler.fit_transform(X_train.reshape(-1, X_train.shape[-1])).reshape(X_train.shape)
-
-    pca = PCA(1) # 1 component
-
-    pca.fit(X_train)
-    #len_label = len(np.unique(pca.fit(X_train).labels_))
-    v_dir = pca.components_[0]
-    l, start, end = length_track(hits_of_track)
-    true_track = track_hits(hits_of_track, start, end)
-    #print(true_track['z'])   
-    # include t_par for sorting later
-    output['reco'] = hits_of_track
-    output['true'] = true_track
-    output['v_dir'] = v_dir
-    #print("After fit: "+str(np.max([h[0] for h in true_track])))
-    explained_var = pca.explained_variance_ratio_
-    variance = pca.explained_variance_
-    
-
-    return explained_var,variance,output
-
-
 def length_track(hits_of_track):
     far_hit = np.max(hits_of_track[:,2])
     close_hit = np.min(hits_of_track[:,2])
@@ -173,7 +146,7 @@ def append_track(dataset, data):
 
 # Helper: append multiple new rows to a per-hit dataset
 def append_hits(dataset, data):
-    n = data.shape[0] if hasattr(data, 'shape') and data.ndim > 0 else 1
+    n = np.array(data).shape[0]
     old_size = dataset.shape[0]
     dataset.resize(old_size + n, axis=0)
     dataset[old_size:old_size + n] = data
