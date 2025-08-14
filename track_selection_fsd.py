@@ -2,6 +2,7 @@ from efield import *
 import numpy as np
 import math
 import h5flow
+import h5py
 from h5flow.data import dereference
 import argparse
 from sklearn.cluster import DBSCAN
@@ -50,17 +51,17 @@ digits = re.findall(r'\d', input_file)
 with h5py.File(output_file, 'w') as fout:
     #Per-track datasets
     d_PCA_dir  = fout.create_dataset('tracks/PCA_dir', shape=(0, 3), maxshape=(None, 3), dtype='f4', chunks=True)
-    d_a2a      = fout.create_dataset('tracks/a2a', shape=(0,), maxshape=(None, 3), dtype='bool', chunks=True)
-    d_pca_qual = fout.create_dataset('tracks/pca_qual', shape=(0,), maxshape=(None, 3), dtype='f4', chunks=True)
+    d_a2a      = fout.create_dataset('tracks/a2a', shape=(0,), maxshape=(None,), dtype='bool', chunks=True)
+    d_pca_qual = fout.create_dataset('tracks/pca_qual', shape=(0,), maxshape=(None,), dtype='f4', chunks=True)
     d_label    = fout.create_dataset('tracks/label', shape=(0,), maxshape=(None,), dtype='i8', chunks=True)
     
     # Per-hit datasets
     d_true     = fout.create_dataset('hits/true', shape=(0, 3), maxshape=(None, 3), dtype='f4', chunks=True)
     d_reco     = fout.create_dataset('hits/reco', shape=(0, 3), maxshape=(None, 3), dtype='f4', chunks=True)
-    d_charge   = fout.create_dataset('hits/charge', shape=(0, ), maxshape=(None, 3), dtype='f4', chunks=True)
+    d_charge   = fout.create_dataset('hits/charge', shape=(0, ), maxshape=(None,), dtype='f4', chunks=True)
     d_track_id = fout.create_dataset('hits/track_id', shape=(0,), maxshape=(None,), dtype='i8', chunks=True)
-    d_t_drift  = fout.create_dataset('hits/t_drift', shape=(0,), maxshape=(None, 1), dtype='f4', chunks=True)
-    d_io_group = fout.create_dataset('hits/io_group', shape=(0,), maxshape=(None, 3), dtype='f4', chunks=True)
+    d_t_drift  = fout.create_dataset('hits/t_drift', shape=(0,), maxshape=(None,), dtype='f4', chunks=True)
+    d_io_group = fout.create_dataset('hits/io_group', shape=(0,), maxshape=(None,), dtype='f4', chunks=True)
 
     # Running counters
     track_count = 0
