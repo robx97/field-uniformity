@@ -164,3 +164,18 @@ def track_hits(points, start_point, end_point):
         point_on_line_closest_to_used_point = np.array(start_point) + (np.array(end_point) -np.array(start_point)) * t
         track.append(point_on_line_closest_to_used_point)
     return track
+
+# Helper: append one new row to a per-track dataset
+def append_track(dataset, data):
+    nonlocal track_count
+    old_size = dataset.shape[0]
+    dataset.resize(old_size + 1, axis=0)
+    dataset[old_size] = data
+
+# Helper: append multiple new rows to a per-hit dataset
+def append_hits(dataset, data):
+    nonlocal hit_count
+    n = data.shape[0] if hasattr(data, 'shape') and data.ndim > 0 else 1
+    old_size = dataset.shape[0]
+    dataset.resize(old_size + n, axis=0)
+    dataset[old_size:old_size + n] = data
