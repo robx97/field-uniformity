@@ -53,13 +53,13 @@ with h5py.File(output_file, 'w') as fout:
     d_PCA_dir  = fout.create_dataset('tracks/PCA_dir', shape=(0, 3), maxshape=(None, 3), dtype='f4', chunks=True)
     d_a2a      = fout.create_dataset('tracks/a2a', shape=(0,), maxshape=(None,), dtype='bool', chunks=True)
     d_pca_qual = fout.create_dataset('tracks/pca_qual', shape=(0,), maxshape=(None,), dtype='f4', chunks=True)
-    d_label    = fout.create_dataset('tracks/label', shape=(0,), maxshape=(None,), dtype='i8', chunks=True)
+    d_label    = fout.create_dataset('tracks/label', shape=(0,), maxshape=(None,), dtype='S20', chunks=True)
     
     # Per-hit datasets
     d_true     = fout.create_dataset('hits/true', shape=(0, 3), maxshape=(None, 3), dtype='f4', chunks=True)
     d_reco     = fout.create_dataset('hits/reco', shape=(0, 3), maxshape=(None, 3), dtype='f4', chunks=True)
     d_charge   = fout.create_dataset('hits/charge', shape=(0, ), maxshape=(None,), dtype='f4', chunks=True)
-    d_track_id = fout.create_dataset('hits/track_id', shape=(0,), maxshape=(None,), dtype='i8', chunks=True)
+    d_track_id = fout.create_dataset('hits/track_id', shape=(0,), maxshape=(None,), dtype='S20', chunks=True)
     d_t_drift  = fout.create_dataset('hits/t_drift', shape=(0,), maxshape=(None,), dtype='f4', chunks=True)
     d_io_group = fout.create_dataset('hits/io_group', shape=(0,), maxshape=(None,), dtype='f4', chunks=True)
 
@@ -194,7 +194,8 @@ with h5py.File(output_file, 'w') as fout:
                 other_digits = list(str(ev) + str(muon_track_number) + str(track_number))
                 combined_digits = last_digits + other_digits
                 # Convert to int
-                lab = int(''.join(combined_digits))
+                lab_str = ''.join(combined_digits)
+                lab = lab_str.encode('utf-8')
                 #shoot to hdf5
                 append_track(d_label, lab)
                 append_track(d_PCA_dir, axis)
@@ -204,7 +205,7 @@ with h5py.File(output_file, 'w') as fout:
                 append_hits(d_true, true_track)
                 append_hits(d_reco, points_c)
                 append_hits(d_charge, q)
-                append_hits(d_track_id, np.full(len(points_c), lab, dtype=np.int64))
+                append_hits(d_track_id, np.full(len(points_c), lab))
                 append_hits(d_t_drift, t)
                 append_hits(d_io_group, iog)
                 track_count += 1
